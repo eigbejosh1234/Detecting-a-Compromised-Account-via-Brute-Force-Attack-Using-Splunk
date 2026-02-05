@@ -75,5 +75,7 @@ This is a dangerous brute force attack which will definitly need urgent escalati
 
 You can begin to click on each alert to investigate its severity, either false negative, falt positive or true negative, tur positive. 
 
+
 To learn or know how to do deep investigation/analysis you can check my previous repo or copy and paste the below link
 
+https://github.com/eigbejosh1234/Detecting-Failed-login-Events-on-Windows-Using-Splunk
