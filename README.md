@@ -26,7 +26,7 @@ To confirm whether my splunk is recieving alert from my window universal forward
 
 **3** In the search box, i searched for the quary below:
 
-***index=* sourcetype=WinEventLog:Security**
+index=* sourcetype=WinEventLog:Security
 
 It should  bring out events that displays either eventcode4624 or eventcode4625
 
@@ -36,7 +36,7 @@ After confirming that my splunk server is recieving both failed and successful l
 
 As we've said earlier, brute force simply means having a multiple 5-10 failed logons, then one successful.
 
-Attacker that want to login without your knowings will first tries many attempt of failed passwords and by chance he/she might guess one successful. That act is that is been refair to COMPROMISE BRUTE FORCE ATTACK. And this kind of attack is very dangerious and need urgent escalation and attention.
+Attacker that want to login without your knowings will first tries many attempt of failed passwords and by chance he/she might guess one successfuly. That act is been refair to COMPROMISE BRUTE FORCE ATTACK. This kind of attack is very dangerious and needs urgent escalation and attention.
 
 
 **HOW I SIMULATE MY WINDOW OS FOR A COMPROMISE BRUTE FORCE ATTACK.**
@@ -49,7 +49,7 @@ Attacker that want to login without your knowings will first tries many attempt 
 
 **4** And then a correct password once to open my window
 
-**After a successful login on my window OS, I quickly pickup my Ubuntu VM where my splunk is installed and running and did the below steps:**
+**After a successful login on my window OS, I quickly pickup my Ubuntu VM where my splunk is installed and did the below steps:**
 
 **1** I opened and login into my splunk server
 
@@ -57,12 +57,12 @@ Attacker that want to login without your knowings will first tries many attempt 
 
 **3** Inside the search box, i search for the below quaries:
 
-***index=* sourcetype=WinEventLog:Security (EventCode=4625 OR EventCode=4624)
+index=* sourcetype=WinEventLog:Security (EventCode=4625 OR EventCode=4624)
 | eval action=if(EventCode=4625,"Failed login","Successful login")
 | eval user=Account_Name
 | where user="USER"
 | table _time host user action
-| sort _time**
+| sort _time
 
 
 <img width="617" height="220" alt="image" src="https://github.com/user-attachments/assets/891e128f-3ffd-4510-a0e9-6bdfa3bafe6c" />
