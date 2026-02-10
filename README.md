@@ -34,9 +34,9 @@ It should  bring out events that displays either eventcode4624 or eventcode4625
 
 After confirming that my splunk server is recieving both failed and successful logs, i moved to simulating my windows OS on compromise brute force. 
 
-As we've said earlier, brute force simply means having a multiple 5-10 failed logons, then one successful.
+As we've said earlier, brute force simply means having a multiple 5-10 or many failed logons, then one successful.
 
-Attacker that want to login without your knowings will first tries many attempt of failed passwords and by chance he/she might guess one successfuly. That act is been refair to COMPROMISE BRUTE FORCE ATTACK. This kind of attack is very dangerious and needs urgent escalation and attention.
+Attacker that want to login without your knowings will first try many attempts of failed passwords and by chance he/she might guess one successfuly. That act is been refair to as **COMPROMISE BRUTE FORCE ATTACK.** This kind of attack is very dangerious and needs urgent escalation and attention.
 
 
 **HOW I SIMULATE MY WINDOW OS FOR A COMPROMISE BRUTE FORCE ATTACK.**
@@ -55,7 +55,7 @@ Attacker that want to login without your knowings will first tries many attempt 
 
 **2** I clicked on search and reporting 
 
-**3** Inside the search box, i search for the below quaries:
+**3** Inside the search box, i search for the below spl quaries:
 
 index=* sourcetype=WinEventLog:Security (EventCode=4625 OR EventCode=4624)
 | eval action=if(EventCode=4625,"Failed login","Successful login")
@@ -71,11 +71,78 @@ index=* sourcetype=WinEventLog:Security (EventCode=4625 OR EventCode=4624)
 
 From the above image, you can see clearly with very close time interval how **7** failed logon was detected and **1** logon was successful.
 
-This is a dangerous brute force attack which will definitly need urgent escalation and attendtion. 
+This is a dangerous compromised brute force attack because after **7** failed logon, the attacker eventually initiated a successful login, and as a soc analyst, this will definitly need urgent escalation and attendtion. 
 
-You can begin to click on each alert to investigate its severity, either false negative, falt positive or true negative, tur positive. 
+**To investigate a particular host that was compromised**
+
+**How to check if a command is being run on your windows os using splunk:**
+
+In your SPL search box, search:
+
+index=* EventCode=4688
+
+If you see nothing that means attacker run no command. But if you see either CMD, POWERSHELL etc commands where ruan on your host.
 
 
-To learn or know how to do deep investigation/analysis you can check my previous repo or copy and paste the below link
+**Check if someone access/change file**
 
-https://github.com/eigbejosh1234/Detecting-Failed-login-Events-on-Windows-Using-Splunk
+In your spl search run:
+
+index=* EventCode=4663
+
+This shows what file, who accessed it and when.
+
+**Did the attacker try to stay permanent?**
+
+In your spl search, run:
+
+index=* EventCode=7045 or EventCode=4597
+
+**Did the attacker create or change account?**
+
+index=* EventCode IN (4720,4722,4728,4732)
+
+
+ **INCIDENT SUMMARY REPORT**
+
+ Host: MASTERJOETECH
+
+ Date: 10/02/2026
+
+ Incident Type: Multiple failed login/ Brute-force attempt
+
+ Severity Level: Low
+
+ **SUMMARY**
+
+ Multiple failed login attempts (EventCode=4625) where detected on the host, followed by a single sucessful local login (EventCode=4624, Logon type 2). No remote access, malicious command execussion, file modification, or persistence activity was identified.
+
+ **INVESTIGATION FINDINGS**
+
+ * Failed login attempts detected.
+
+ * Successful local login fro same host (127.0.0.1)
+
+ * No RPD or remote access
+
+ * No suspicious processes or command execussion
+
+ * No malicious services, file or account changes
+
+   **IMPACT**
+   No evidence or system compromised. Activity likely due to repeated incorrect password attempts or local login brute force.
+
+
+   **RECOMMENDATION**
+
+   * Reset affected user password
+  
+   * Enable account lockout policy
+  
+   * Continue monitoring login events
+  
+     **INCIDENT STATUS**
+
+     Status: CLOSED
+
+     Escalation Required: NO
